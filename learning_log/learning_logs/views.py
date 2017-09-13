@@ -35,13 +35,17 @@ def new_topic(request):
     else:
         form = TopicForm(request.POST)
         if form.is_valid():
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
+
             form.save()
             return HttpResponseRedirect(reverse('learning_logs:topics'))
 
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
 
-@login_required    
+@login_required
 def new_entry(request, topic_id):
     topic = Topic.objects.get(id = topic_id)
     if request.method != 'POST':
@@ -60,9 +64,12 @@ def new_entry(request, topic_id):
 
 @login_required
 def edit_entry(request, entry_id):
-    entry = Entry.object.get(id = entry_id)
+    entry = Entry.objects.get(id = entry_id)
     topic = entry.topic
-    
+
+    if topic.owner != request.user:
+        raise Http404
+
     if request.method != 'POST':
         form = EntryForm(instance = entry)
     else:
@@ -72,4 +79,4 @@ def edit_entry(request, entry_id):
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
 
     context = {'entry': entry, 'topic': topic, 'form': form}
-    return render(request, 'learning_logs/new_entry.html', context)
+    return render(request, 'learning_logs/edit_entry.html', context)
