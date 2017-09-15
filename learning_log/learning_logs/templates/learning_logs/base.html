@@ -32,10 +32,10 @@
           
           <ul class="nav navbar-nav navbar-right" >
             {% if user.is_authenticated %}
-              <li><a href="{% url 'users.logout' %}" >log out</a></li>
+              <li><a href="{% url 'users:logout' %}" >log out</a></li>
             {% else %}
-              <li><a href="{% url 'users.register' %}" >register</a></li>
-              <li><a href="{% url 'users.login' %}" >log in</a></li>
+              <li><a href="{% url 'users:register' %}" >register</a></li>
+              <li><a href="{% url 'users:login' %}" >log in</a></li>
             {% endif %}
           </ul>
         </div>
@@ -44,10 +44,10 @@
     
     <div class="container">
       <div class="page-header">
-        [% block header %} {% endblock header %}
+        {% block header %} {% endblock header %}
       </div>
       <div>
-        [% block content %} {% endblock content %}
+        {% block content %} {% endblock content %}
       </div>
     </div>
 
