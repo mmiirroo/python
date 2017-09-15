@@ -1,2 +1,5 @@
-db.sqlite3
+*.sqlite3
+*.pyc
 ll_env/
+__pycache__/
+
