@@ -1,5 +1,46 @@
 {% extends "learning_logs/base.html" %}
 
 {% block content %}
-  
+
+<script type="text/javascript"> 
+    var map = new BMap.map("allmap");
+    map.centerAndZoom(new BMap.Point(118,308, 32.3002), 18);
+    map.enableScrollWheelZoom(true);
+    var navigationControl = new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        enableGeolocation: true
+    });
+    map.addControl(navigationControl);
+
+    function get_location() {
+        var address_latitude = {{ address_latitude | safe }};
+        var address_longtitude = {{ address_longtitude | safe }};
+        var address_data = {{ address_data | safe }};
+        var point = [];
+        var marker = [];
+        for(var i = 0; i < address_longtitude.length; i++) {
+            point[i] = new BMap.Point(address_longtitude[i], address_latitude[i]);
+            marker[i] = new BMap.Marker(point[i]);
+            map.addOverlay(marker[i]);
+        }
+        for(i = 0; i < marker.length; i++) {
+            (function() {
+                var index = i;
+                marker[index].addEventListener('click', function() {
+			this.openInfoWindow(new BMap.InfoWindow(address_data[index]));
+			});
+	     })();
+	}
+    }
+</script>
+
+<script type="text/javascript" 
+        src="http://api.map.baidu.com/api>v=2.0&ak=emaUGGz2XvN1sUFVE8NoIvK0cBQGTPOT" ></script>
+
+<div id="allmap"></div>
+<div id="r-result">
+    <input type="button"/>
+</div>
+
 {% endblock content %}
