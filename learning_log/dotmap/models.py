@@ -5,6 +5,6 @@ from django.db import models
 
 # Create your models here.
 class address_info(models.Model):
-    longtitude = models.FloatField()
+    longitude = models.FloatField()
     latitude = models.FloatField()
     data = models.CharField(max_length=200)
